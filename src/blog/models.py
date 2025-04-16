@@ -15,16 +15,16 @@ class BlogPost(models.Model):
     embedding = VectorField(dimensions=EMBEDDING_LENGTH,blank=True, null=True)  # Example dimension size, adjust as needed
     can_delete= models.BooleanField(default=False, help_text="Use in Jupyter Notebook")
     
-    # def save(self, *args, **kwargs):
-    #     has_changed = False
-    #     if self._content != self.content:
-    #         has_changed = True
-    #         self._content = self.content
-    #     if (self.embedding is None) or has_changed == True:
-    #         raw_embedding_text = self.get_embedding_text_raw()
-    #         if raw_embedding_text is not None:
-    #            self.embedding = services.get_embedding(raw_embedding_text)
-    #     super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        has_changed = False
+        if self._content != self.content:
+            has_changed = True
+            self._content = self.content
+        if (self.embedding is None) or has_changed == True:
+            raw_embedding_text = self.get_embedding_text_raw()
+            if raw_embedding_text is not None:
+               self.embedding = services.get_embedding(raw_embedding_text)
+        super().save(*args, **kwargs)
 
 
 

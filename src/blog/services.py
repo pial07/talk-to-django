@@ -8,8 +8,9 @@ from django.db.models import F
 
 EMBEDDING_MODEL =config("EMBEDDING_MODEL", default="text-embedding-3-small")
 EMBEDDING_LENGTH=config("EMBEDDING_LENGTH", default=1536, cast=int)
-# EMEDDING_MODEL =config("EMEDDING_MODEL", default="text-embedding-3-small")
+
 OPENAI_API_KEY= config("OPENAI_API_KEY")
+
 
 client = OpenAI(
     api_key=OPENAI_API_KEY
@@ -17,7 +18,7 @@ client = OpenAI(
 
 def get_embedding(text,model=EMBEDDING_MODEL):
     text=text.replace("\n","").strip()
-    return model.encode(text)
+    return client.embeddings.create(input=[text], model=model).data[0].embedding
 
 def get_query_embedding(text):
     return get_embedding(text) 
